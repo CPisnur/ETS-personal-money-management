@@ -134,9 +134,9 @@ if (form) {
     const transaksiBaru = {
       id: Date.now(),
       tanggal: inputTanggal.value,
+      deskripsi: inputDeskripsi.value,
+      jumlah: nominal,
       jenis: inputJenis.value,
-      kategori: inputDeskripsi.value,
-      nominal: nominal,
       dompet: inputDompet.value
     };
 
@@ -150,3 +150,87 @@ if (form) {
   });
 }
 
+// 7. Form Pindah Dompet (Transfer Dana Antar Dompet + Validasi Saldo Minus)
+if (formPindah) {
+  formPindah.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const nominal = Number(inputJumlahPindah.value);
+    const dari = inputDariDompet.value;
+    const ke = inputKeDompet.value;
+
+    if (nominal <= 0) {
+      alert("Jumlah pemindahan harus lebih dari 0!");
+      return;
+    }
+
+    if (dari === ke) {
+      alert("Dompet asal dan dompet tujuan tidak boleh sama!");
+      return;
+    }
+
+    // HITUNG SALDO DOMPET ASAL SAAT INI
+    let saldoDari = 0;
+    transactions.forEach(function (t) {
+      if (t.dompet === dari) {
+        if (t.jenis === "masuk") saldoDari += t.jumlah;
+        else if (t.jenis === "keluar") saldoDari -= t.jumlah;
+      }
+    });
+
+    // Validasi Saldo Cukup
+    if (saldoDari < nominal) {
+      const namaDompet = dari === "usaha" ? "Usaha" : "Pribadi";
+      alert(`Pindah dompet gagal! Saldo Dompet ${namaDompet} saat ini tidak mencukupi (${formatRupiah(saldoDari)}).`);
+      return;
+    }
+
+    // JIKA SALDO CUKUP, BUAT 2 TRANSAKSI
+    const today = new Date().toISOString().split("T")[0];
+    const now = Date.now();
+
+    const teksDari = dari === "usaha" ? "Usaha" : "Pribadi";
+    const teksKe = ke === "usaha" ? "Usaha" : "Pribadi";
+
+    const transaksiKeluar = {
+      id: now,
+      tanggal: today,
+      deskripsi: `Pindah Dana ke ${teksKe}`,
+      jumlah: nominal,
+      jenis: "keluar",
+      dompet: dari
+    };
+
+    const transaksiMasuk = {
+      id: now + 1,
+      tanggal: today,
+      deskripsi: `Terima Dana dari ${teksDari}`,
+      jumlah: nominal,
+      jenis: "masuk",
+      dompet: ke
+    };
+
+    transactions.unshift(transaksiMasuk);
+    transactions.unshift(transaksiKeluar);
+
+    simpanData();
+    render();
+
+    inputJumlahPindah.value = "";
+    alert(`Berhasil memindahkan ${formatRupiah(nominal)} dari Dompet ${teksDari} ke Dompet ${teksKe}!`);
+  });
+}
+
+// Main Render Function
+function render() {
+  hitungRingkasan();
+  renderTabel();
+}
+
+// Set tanggal default ke hari ini jika elemennya ada
+if (inputTanggal) {
+  inputTanggal.value = new Date().toISOString().split("T")[0];
+}
+
+// Jalankan saat pertama kali dibuka
+muatData();
