@@ -3,22 +3,112 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Belajar ETS</title>
+        <title>Kaskita</title>
         <link rel="stylesheet" href="styles.css">
-        <title>Belajar ETS</title>
+        <script src="script.js" defer></script>
+
     </head>
 
     <body>
         <header>
-            <h1>Selamat Datang di Belajar ETS</h1>
+            <h1>Dashboard</h1>
+
         </header>
 
         <main>
-            <p>Ini adalah contoh paragraf pada halaman HTML.</p>
+             <h2>Ringkasan saldo</h2>
+            <section class="Dompet">
+           <div class="DompetUsaha">
+                <h3>Dompet usaha</h3>
+                <p id="saldoDompet">Rp 0</p>
+                <div class="saldoMasukKeluar">
+                    <p> Masuk: <span id="saldoMasukUsaha">Rp 0</span></p>
+                    <p> Keluar: <span id="saldoKeluarUsaha">Rp 0</span></p>
+                </div>
+            </div>
+
+            <div class="DompetPribadi">
+                <h3>Dompet pribadi</h3>
+                <p id="saldoPribadi">Rp 0</p>
+                <div class="saldoMasukKeluar">
+                    <p> Masuk: <span id="saldoMasukPribadi">Rp 0</span></p>
+                    <p> Keluar: <span id="saldoKeluarPribadi">Rp 0</span></p>
+                </div>
+            </div>
+            </section>
+
+            <section class="RingkasanTransaksi">
+                <h2>Ringkasan transaksi</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Deskripsi</th>
+                            <th>Jumlah</th>
+                            <th>Jenis</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaksiTableBody">
+                        <!-- Transaksi akan ditambahkan di sini melalui JavaScript -->
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="TambahTransaksi">
+                <h2>Tambah transaksi</h2>
+                <form id="transaksiForm">
+                    <label for="tanggal">Tanggal:</label>
+                    <input type="date" id="tanggal" name="tanggal" required>
+
+                    <label for="deskripsi">Deskripsi:</label>
+                    <input type="text" id="deskripsi" name="deskripsi" required>
+
+                    <label for="jumlah">Jumlah:</label>
+                    <input type="number" id="jumlah" name="jumlah" required>
+
+                    <label for="jenis">Jenis:</label>
+                    <select id="jenis" name="Pilih Jenis" required>
+                        <option value="masuk">Masuk</option>
+                        <option value="keluar">Keluar</option>
+                    </select>
+
+
+                    <label for="dompet">Dompet:</label>
+                    <select id="dompet" name="Pilih Dompet" required>
+                        <option value="usaha">Usaha</option>
+                        <option value="pribadi">Pribadi</option>
+                    </select>
+
+                    <button type="submit">Tambah Transaksi</button>
+                </form>
+            </section>
+
+            <section class=" pindahDompet">
+                <h2>Pindah Dompet</h2>
+                <form id="pindahDompetForm">
+                    <label for="jumlahPindah">Jumlah:</label>
+                    <input type="number" id="jumlahPindah" name="jumlahPindah" required>
+
+                    <label for="dariDompet">Dari Dompet:</label>
+                    <select id="dariDompet" name="dariDompet" required>
+                        <option value="usaha">Usaha</option>
+                        <option value="pribadi">Pribadi</option>
+                    </select>
+
+                    <label for="keDompet">Ke Dompet:</label>
+                    <select id="keDompet" name="keDompet" required>
+                        <option value="usaha">Usaha</option>
+                        <option value="pribadi">Pribadi</option>
+                    </select>
+
+                    <button type="submit">Pindah Dompet</button>
+                </form>
+            </section>
+
         </main>
 
         <footer>
-            <p>&copy; 2024 Belajar ETS. All rights reserved.</p>
+            <p>&copy; 2024 Kaskita. All rights reserved.</p>
         </footer>
 
     </body>
